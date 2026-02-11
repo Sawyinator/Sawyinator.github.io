@@ -624,13 +624,28 @@ Back to main website
 
     quizInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') handleAction(); });
     window.onload = () => { loadSettings(); initDropdowns(); };
+
+ // Code to allow enter to be used to continue
     
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         const actionBtn = document.getElementById('main-action-btn');
-        // Only click if the button is visible and not disabled
+        const quizInput = document.getElementById('quiz-input');
+
+        // 1. If the user is currently typing in the input, 
+        // let the input handle the 'Enter' for submission first.
+        if (document.activeElement === quizInput && quizInput.value !== "") {
+            // This allows your existing handleAction() to process the guess
+            return; 
+        }
+
+        // 2. Only if the button text says "Continue" or "Next", 
+        // or if the input is blurred/revealed, click the button.
         if (actionBtn && !actionBtn.disabled) {
-            actionBtn.click();
+            // Safety: only trigger if the answer has already been revealed/feedback shown
+            if (isRevealed || document.getElementById('feedback').innerText !== "") {
+                actionBtn.click();
+            }
         }
     }
 });
