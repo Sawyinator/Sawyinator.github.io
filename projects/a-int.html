@@ -630,22 +630,19 @@ Back to main website
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         const actionBtn = document.getElementById('main-action-btn');
-        const quizInput = document.getElementById('quiz-input');
+        const feedback = document.getElementById('feedback').innerText;
 
-        // 1. If the user is currently typing in the input, 
-        // let the input handle the 'Enter' for submission first.
-        if (document.activeElement === quizInput && quizInput.value !== "") {
-            // This allows your existing handleAction() to process the guess
+        // If feedback is currently empty, it means we haven't answered yet.
+        // We let the default "Enter" behavior handle the submission.
+        if (feedback === "") {
             return; 
         }
 
-        // 2. Only if the button text says "Continue" or "Next", 
-        // or if the input is blurred/revealed, click the button.
+        // If there IS feedback (Correct/Incorrect), we prevent the default 
+        // "Enter" behavior and manually click the button ONLY ONCE.
+        event.preventDefault();
         if (actionBtn && !actionBtn.disabled) {
-            // Safety: only trigger if the answer has already been revealed/feedback shown
-            if (isRevealed || document.getElementById('feedback').innerText !== "") {
-                actionBtn.click();
-            }
+            actionBtn.click();
         }
     }
 });
