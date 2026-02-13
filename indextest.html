@@ -198,6 +198,30 @@
     border-radius: 12px;
     font-weight: 600;
 }
+/* Update your existing modal-content and right-side styles */
+.modal-content {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 700px; /* Slightly wider for longer text */
+    max-height: 85vh;  /* Prevent it from going off-screen */
+    overflow-y: auto;  /* Scroll if text is very long */
+    padding: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: row; /* Default side-by-side */
+    gap: 30px;
+}
+
+/* Stack vertically on mobile */
+@media (max-width: 600px) {
+    .modal-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
 </style>
 </head>
 <body>
@@ -277,20 +301,33 @@
 
 <script>
 function openModal(event, btn) {
-    // Prevent the main <a> tag from opening when clicking the 'i' button
     event.preventDefault();
     event.stopPropagation();
 
+    const parentLink = btn.closest('a');
     const card = btn.closest('li');
+    
+    // Extract data from the list item
     const title = card.querySelector('.project-title').innerText;
     const logo = card.querySelector('.project-icon').src;
     const desc = card.querySelector('.project-description').innerHTML;
-    const link = card.querySelector('a').href;
+    const link = parentLink.href;
+    const target = parentLink.getAttribute('target'); // Get target (_blank or null)
 
+    // Populate Modal
     document.getElementById('modalTitle').innerText = title;
     document.getElementById('modalLogo').src = logo;
     document.getElementById('modalDesc').innerHTML = desc;
-    document.getElementById('modalLaunch').href = link;
+    
+    const launchBtn = document.getElementById('modalLaunch');
+    launchBtn.href = link;
+
+    // Apply target only if it exists in the original list item
+    if (target) {
+        launchBtn.setAttribute('target', target);
+    } else {
+        launchBtn.removeAttribute('target');
+    }
 
     document.getElementById('infoModal').style.display = 'flex';
 }
