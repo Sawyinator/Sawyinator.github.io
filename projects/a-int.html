@@ -341,9 +341,7 @@ Back to main website
 
 <script>
     
-     // Code to allow enter to be used to continue
-    
-// Optimized Enter key behavior
+// Enter key behavior
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         const actionBtn = document.getElementById('main-action-btn');
@@ -639,7 +637,6 @@ document.addEventListener('keydown', function(event) {
         const b = localStorage.getItem('basis_script'); if(b) basisScript = b;
     }
 
-    quizInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') handleAction(); });
     window.onload = () => { loadSettings(); initDropdowns(); };
 </script>
 
